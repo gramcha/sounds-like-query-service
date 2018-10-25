@@ -1,5 +1,8 @@
 package com.gramcha.controller;
 
+import com.gramcha.services.DatamuseClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -11,10 +14,12 @@ import java.net.UnknownHostException;
  */
 @RestController
 public class SoundsLikeQueryController {
-    @RequestMapping(path = "/soundslike")
-    public Mono<String> synonyms() throws UnknownHostException {
-        Mono<String> result = Mono.just("Hello, world - from soundslike");
-        return result;
+    @Autowired
+    DatamuseClientService datamuseClientService;
+
+    @RequestMapping(path = "/soundslike/{word}")
+    public Mono<String> synonyms(@PathVariable String word) throws UnknownHostException {
+        return datamuseClientService.getSoundsLike(word);
     }
 }
 
